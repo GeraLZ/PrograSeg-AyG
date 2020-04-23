@@ -1,0 +1,6 @@
+projectKey=monitor:21042020
+serverUrl=http://localhost:9000
+serverVersion=8.2.0.32929
+dashboardUrl=http://localhost:9000/dashboard?id=monitor%3A21042020
+ceTaskId=AXGpQtLCsPBT_EBOoDVr
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXGpQtLCsPBT_EBOoDVr
