@@ -23,5 +23,5 @@ for var in $(ccrypt -d -c $archivo); do
     export $var
 done
 
-python manage.py runserver
+python3 manage.py runserver
 
