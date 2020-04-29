@@ -22,5 +22,5 @@ archivo=$1
 for var in $(ccrypt -d -c $archivo); do
     export $var
 done
-python manage.py makemigrations
-python manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
