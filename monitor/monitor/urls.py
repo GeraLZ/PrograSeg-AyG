@@ -19,6 +19,12 @@ from monitor.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inicioSesion/', inicioSesion),
+    path('inicioSesionAdmin/', inicioSesionAdmin),
     path('paginaInicioAdmin/', paginaInicioAdmin),
+    path('logout/', logout),
+    path('inicioSesionUser/', inicioSesionUser),
+    path('paginaInicioUser/', paginaInicioUser),
+    path('registroUser/',registroUser),
+    path('registroServer/',registroServer),
+    path('logoutUser/', logoutUser),
 ]

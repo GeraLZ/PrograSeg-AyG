@@ -1,0 +1,9 @@
+{% extends 'monitorBase.html' %} {% block titulo %}MONITORIZAR SERVIDORES{% endblock %} {% block contenido %}
+<!--<header class="jumbotron container col-sm-12" style="background-color: black;"></header>-->
+{% block script %}<script src="/static/js/mainAdmin.js"></script>{% endblock %}
+{% include 'barraNav.html' %}
+<h3 class="text-center col-sm-12"><b>REGISTRO SERVIDORES</b></h3>
+<div class="text-center col-sm-12">{% if errores %}
+    <div class="alert alert-danger container col-sm-12"><strong>ERROR! </strong>{{ errores }}</div> {% endif %}
+</div>
+{% endblock %}
