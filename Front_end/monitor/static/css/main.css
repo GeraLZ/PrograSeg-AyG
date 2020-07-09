@@ -1,0 +1,23 @@
+.input-group {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding-top: 20px
+}
+
+.row {
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+.estado {
+    color: white;
+}
