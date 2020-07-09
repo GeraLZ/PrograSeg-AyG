@@ -129,3 +129,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (BASE_DIR + '/static/', )
+
+SESSION_COOKIE_AGE = 300 #Tiempo de vida de una sesion en segundos, x seg despues de que se hace una modificacion/peticion.

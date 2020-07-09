@@ -36,6 +36,7 @@ def inicioSesionAdmin(request):
                 telegram.sendToken(getData.id_token, getData.id_chat, getData.codigo_token)
                    
                 request.session['logueado'] = True
+                request.session.set_expiry(1800)#Tiempo maximo de sesion en segundos, desde que inicio solo se le permitira usar el sistema por X minutos
                     
                 return render(request, 'tokenAdmin.html',{'saludo': 'Admin', 'usuario' : getData.usuario}) 
             else:
@@ -125,6 +126,7 @@ def inicioSesionUser(request):
                 telegram.sendToken(getData.id_token, getData.id_chat, getData.codigo_token)
                    
                 request.session['logueadoUser'] = True
+                request.session.set_expiry(900)#Tiempo maximo de sesion en segundos, desde que inicio solo se le permitira usar el sistema por X minutos
                     
                 return render(request, 'tokenUser.html',{'saludo': 'User', 'usuario' : getData.usuario}) 
             else:
