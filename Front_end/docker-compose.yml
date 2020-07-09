@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+
+  monitor:
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      URL_SERVICIOS: ${URL_SERVICIOS}
+    build: .
+    restart: always
+    container_name: monitor_frontend
+    volumes:
+      - ./monitor:/code
+    depends_on:
+      - monitorPS
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "250M"          
+  
+  monitorPS:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./data:/var/lib/mysql
+
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./monitor/static:/static
+    depends_on:
+      - monitor
+    ports:
+      - 8000:80
