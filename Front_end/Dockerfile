@@ -21,7 +21,7 @@ RUN mkdir /code
 RUN mkdir /start
 
 COPY ./run.sh /start
-run chmod 751 /start/run.sh
+RUN chmod 751 /start/run.sh
 
 WORKDIR /code
 
