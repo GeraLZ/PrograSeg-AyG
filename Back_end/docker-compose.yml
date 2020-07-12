@@ -11,6 +11,8 @@ services:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       URL_SERVICIOS: ${URL_SERVICIOS}
+      CLIENTE_SERVICIOS_USR: ${CLIENTE_SERVICIOS_USR}
+      CLIENTE_SERVICIOS_PWD: ${CLIENTE_SERVICIOS_PWD}
     build: .
     restart: always
     container_name: monitor_backend
@@ -22,7 +24,8 @@ services:
       resources:
         limits:
           cpus: "1"
-          memory: "250M"          
+          memory: "250M"   
+    pid: host      
     
   backend_scan:
     image: mariadb
@@ -42,6 +45,8 @@ services:
       - webservices
     ports:
       - 8000:80
+
+  #pid: "host"
 
   #terminal:
   #  image: terminal
