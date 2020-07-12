@@ -1,0 +1,23 @@
+{% extends 'monitorBase.html' %} {% block titulo %}MONITORIZAR SERVIDORES{% endblock %} {% block contenido %}
+<!--<header class="jumbotron container col-sm-12" style="background-color: black;"></header>-->
+{% block script %}<script src="/static/js/mainAdmin.js"></script>{% endblock %}
+{% include 'barraNav.html' %}
+<div class="container-fluid">
+    <div class="text-center">
+        <h2>Servidores Registrados</h2>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="row lista">
+        {% for servidor in servidores %}
+        <div class="col-sm-4">
+            <div class="panel panel-default text-center">
+                <div class="panel-heading">
+                    <h4><b>{{ servidor.ip }}</b></h4>
+                    <h4>Administrador: {{ servidor.admin }}</h4>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

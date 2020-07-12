@@ -1,0 +1,36 @@
+{% extends 'monitorBase.html' %} {% block titulo %}MONITORIZAR SERVIDORES{% endblock %} {% block contenido %}
+<!--<header class="jumbotron container col-sm-12" style="background-color: black;"></header>-->
+{% block script %}<script src="/static/js/mainAdmin.js"></script>{% endblock %}
+{% include 'barraNav.html' %}
+<div class="container-fluid">
+    <div class="text-center">
+        <h2>Monitorizar Servidores</h2>
+    </div>
+    <div>
+        <div class="container-fluid text-center">
+            <h3 class="bg-2">ADMINISTRADORES</h3>
+
+            <div class="col-sm-6">
+                <button class="button" id="lista_admin" style="vertical-align:middle"><span>Listar Administradores</span></button>
+            </div>
+            
+            <div class="col-sm-6">
+                <button class="button" id="registro_admin" style="vertical-align:middle"><span>Registar Administradores</span></button>
+            </div>
+        </div>
+
+        <div class="container-fluid text-center">
+            <h3 class="bg-2">SERVIDORES</h3>
+
+            <div class="col-sm-6">
+                <button class="button" id="lista_server" style="vertical-align:middle"><span>Listar Servidores</span></button>
+            </div>
+    
+            <div class="col-sm-6">
+                <button class="button" id="registro_server" style="vertical-align:middle"><span>Registar Servidores</span></button>
+            </div>            
+        </div>
+
+    </div>
+</div>
+{% endblock %}

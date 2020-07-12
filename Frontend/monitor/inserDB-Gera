@@ -1,0 +1,17 @@
+insert into monitorPS_admin (usuario, password, id_chat, id_token, salt) values ('gera','$6$uqWbzxywcQK4XARU$w/tFxcvpR2N0Eh1C0qRu6st7hW3lobKFZFXgt2XrnCN0sEYofZchzremiq.3RRsLrQB1BrwOb0e76qlChoo.r0', '607637284', '1091879421:AAGmYEkbnHBq_zS_WM4uLyrrCpdDbU-MrDA', 'uqWbzxywcQK4XARUiYK5Qw==');
+
+pass: Misteriorey-23
+
+
+insert into monitorPS_admin (usuario, password, id_chat, id_token, salt) values ('adalucs','$6$LfTH2d/1D8Nq+R8m$IGA1nkJTPjjAr7Wx9qUoN8TxHK27HU1SRVpNFdDzsEWs9xoaCgGL3MUbvhFZ9ugYRc3m3qtcgt7Jrkdhr8kui.', '651252741', '1142873581:AAHpI29ikOpv_AhuPgdXvCd1CJUF7pK2OLc', 'LfTH2d/1D8Nq+R8mLfuIwA==');
+
+pass: 123456
+
+###################################################################################################################
+Users
+
+ada 
+ id_token ->> 1247517036:AAHMx5uFCZ5FVOnql96t66ZfxCzoS-lNwKY
+ id_chat  ->> 651252741
+ 
+ 
