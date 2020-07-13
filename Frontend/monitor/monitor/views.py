@@ -90,6 +90,40 @@ def listarServer(request):
         return render(request, t, c)
 
 @decorador.verificar_Admin
+def borrarServer(request):
+    t = 'borrar_server.html'
+    if request.method == 'GET':
+        return render(request, t)
+    if request.method == 'POST':
+        ip_server = request.POST.get('server','').strip()
+        if verif_ip.ipValida(ip_server):
+            if models.servers.objects.filter(ip=ip_server).exists():
+                server = models.servers.objects.get(ip=ip_server)
+                server.delete()
+                return redirect('/paginaInicioAdmin/')
+            else:
+                c = { 'errores': 'El servidor no existe' }
+                return render(request, t, c)
+        else:
+            c = { 'errores': 'IP no valida' }
+            return render(request, t, c)
+
+@decorador.verificar_Admin
+def borrarAdmin(request):
+    t = 'borrar_admin.html'
+    if request.method == 'GET':
+        return render(request, t)
+    if request.method == 'POST':
+        admin_name = request.POST.get('admin_name','').strip()
+        if models.user.objects.filter(usuario=admin_name).exists():
+            admin = models.user.objects.get(usuario=admin_name)
+            admin.delete()
+            return redirect('/paginaInicioAdmin/')
+        else:
+            c = { 'errores': 'El administrador no existe' }
+            return render(request, t, c)
+
+@decorador.verificar_Admin
 def asociar(request):
     t = 'asociar.html'
     if request.method == 'GET':

@@ -32,4 +32,6 @@ urlpatterns = [
     path('listarServer/',listarServer),
     path('asociar/',asociar),
     path('monitorizar/',monitorizar),
+    path('borrarServer/',borrarServer),
+    path('borrarAdmin/',borrarAdmin),
 ]
