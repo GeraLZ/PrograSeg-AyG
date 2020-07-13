@@ -8,6 +8,14 @@ $(document).ready(function() {
         window.location.replace("/asociar/");
     });
 
+    $(".del_server").click(function() {
+        window.location.replace("/borrarServer/");
+    });
+
+    $(".del_admin").click(function() {
+        window.location.replace("/borrarAdmin/");
+    });
+
     $(".salir").click(function() {
         window.location.replace("/logout/");
     });
