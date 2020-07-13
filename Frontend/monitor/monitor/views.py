@@ -7,10 +7,14 @@ from monitor import intentos
 from monitor import telegram
 from monitor import passwords
 from monitor import cifrado_CTR
+from monitor import verif_ip
 import os
-
+import requests
+import json
 from django.http import HttpResponseRedirect 
+import logging
 
+logging.basicConfig(filename='login.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S',level=logging.DEBUG)
 
 def inicioSesionAdmin(request):
     t = 'inicioSesionAdmin.html'
@@ -49,6 +53,7 @@ def inicioSesionAdmin(request):
             c = {'errores': 'Usuario inválido'}
             return render(request, t, c)
     else:
+        logging.warning('Intento de login en Administrador Global por Anon')
         return render(request, t, {'errores': 'Demasiados intentos fallidos'})
 
 @decorador.verificar_Admin
@@ -62,6 +67,7 @@ def paginaInicioAdmin(request):
         tokenT = request.POST.get('token').strip()
         if models.admin.objects.filter(usuario=usuario,codigo_token=tokenT).exists():
             models.admin.objects.filter(usuario=usuario,codigo_token=tokenT).update(codigo_token=None)
+            logging.info('Se ha logueado el usuario %s',usuario)
             return render(request, t, c)
         else:
             request.session['logueado'] = False
@@ -94,6 +100,7 @@ def asociar(request):
             if models.servers.objects.filter(ip=server).exists():
                 setData = models.servers.objects.filter(ip=server)
                 setData.update(admin=admin)
+                logging.info('Se ha asociado el admnistrador %s con el servidor %s', admin, server)
                 return redirect('/listarServer/')
             else:
                 c = { 'errores': 'El servidor no existe' }
@@ -124,6 +131,7 @@ def registroUser(request):
             usuarios.id_chat = request.POST.get('id_chat').strip()
             usuarios.id_token = request.POST.get('id_token').strip()
             usuarios.save()
+            logging.info('Se ha registrado un usuario %s', usuarios.usuario)
             return redirect('/paginaInicioAdmin/')
         else:
             c = { 'errores': 'La password debe de contener al menos una mayúscula, una minúscula, un número y un carácter especial(@$!#%*?&-_) y tener una longitud mayor a 8 y menor a 20 caracteres' }
@@ -136,22 +144,28 @@ def registroServer(request):
     if request.method == 'GET':
         return render(request, t)
     if request.method == 'POST':
-
         ip = request.POST.get('ip', '').strip()
-        if models.servers.objects.filter(ip=ip).exists():
-            c = { 'errores': 'La ip ya esta un uso' }
-            t = 'registroUser.html'
-            return render(request,t, c)
+        if verif_ip.ipValida(ip):
+    
+            if models.servers.objects.filter(ip=ip).exists():
+                c = { 'errores': 'La ip ya esta un uso' }
+                t = 'registroUser.html'
+                return render(request,t, c)
 
-        servidor = models.servers()
-        servidor.ip = request.POST.get('ip').strip()
-        servidor.api_user = request.POST.get('api_user').strip()
-        iv_generada = cifrado_CTR.makeIV()
-        servidor.api_iv =iv_generada
-        key = os.environ.get('API_PASSWORD')
-        servidor.api_password = cifrado_CTR.cifrar(request.POST.get('api_password').strip(),key,iv_generada)
-        servidor.save()
-        return redirect('/paginaInicioAdmin/')
+            servidor = models.servers()
+            servidor.ip = request.POST.get('ip').strip()
+            servidor.api_user = request.POST.get('api_user').strip()
+            iv_generada = cifrado_CTR.makeIV()
+            servidor.api_iv =iv_generada
+            key = os.environ.get('API_PASSWORD')
+            servidor.api_password = cifrado_CTR.cifrar(request.POST.get('api_password').strip(),key,iv_generada)
+            servidor.save()
+            logging.info('Se ha registrado un servidor %s', servidor.ip)
+            return redirect('/paginaInicioAdmin/')
+        else:
+            c = { 'errores': 'La ip no es valida' }
+            t = 'registroServer.html'
+            return render(request,t, c)
 
 def logout(request):
     #request.session['logueado'] = False
@@ -192,24 +206,71 @@ def inicioSesionUser(request):
             c = {'errores': 'Usuario inválido'}
             return render(request, t, c)
     else:
+        logging.warning('Intento de login de Usuario por Anon')
         return render(request, t, {'errores': 'Demasiados intentos fallidos'})
 
 @decorador.verificar_Usuario
 def paginaInicioUser(request):
     t = 'paginaInicioUser.html'
-    c = {'saludo': 'Admin','servidores': servidores}
-    servidores = models.servers.objects.filter(admin=Admin).exists()
+
     if request.method == 'GET':
-        return render(request, t)
+        admin= request.session['usuario']
+        servidores = models.servers.objects.filter(admin=admin)
+        c = {'servidores': servidores}
+        return render(request, t,c)
+        
     if request.method == 'POST':
         usuario = request.POST.get('usuario').strip()
         tokenT = request.POST.get('token').strip()
         if models.user.objects.filter(usuario=usuario,codigo_token=tokenT).exists():
             models.user.objects.filter(usuario=usuario,codigo_token=tokenT).update(codigo_token=None)
-            return render(request, t, c)
+            
+            servidores = models.servers.objects.filter(admin=usuario)
+            request.session['usuario'] = usuario
+            c = {'servidores':servidores}
+            logging.info('Se ha logueado el usuario %s', usuario)
+            return render(request,t,c)
         else:
             request.session['logueadoUser'] = False
+            request.session.flush() 
             return redirect('/inicioSesionUser/')
+
+@decorador.verificar_Usuario
+def monitorizar(request):
+    t = 'monitorizar.html'
+
+    if request.method == 'GET':
+        return redirect('/paginaInicioUser/')
+    
+    if request.method == 'POST':
+        ip = request.POST.get('ip').strip()
+        key = os.environ.get('API_PASSWORD')
+        getData = models.servers.objects.get(ip=ip)
+
+        pswAPI = cifrado_CTR.descifrar(getData.api_password,key,getData.api_iv)
+        url = 'http://'+ip+':8000/autenticacion/'
+        datos = {'username': getData.api_user, 'password': pswAPI}
+        res = requests.post(url,datos)
+        
+        if res.status_code == 200:
+            token_json=json.loads(res.text)
+            authtok = token_json['token']
+            
+            url2 = 'http://'+ip+':8000/datos/'
+            head_Tk = { 'Authorization': 'Token ' + authtok}
+            
+            res2 = requests.get(url2, headers = head_Tk)
+            data_json = json.loads(res2.text)
+            
+            cpuS = data_json[u'cpu']
+            discoS = data_json[u'disco']
+            memoriaS = data_json[u'memoria']
+
+            c = {'ip': ip, 'memoria': memoriaS, 'cpu': cpuS, 'memoria': memoriaS, 'disco': discoS}
+            return render(request,t, c)
+        else:
+            return redirect('/paginaInicioUser/')
+
 
 def logoutUser(request):
     #request.session['logueadoUser'] = False

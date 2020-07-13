@@ -7,4 +7,12 @@ $(document).ready(function() {
     $(".salir").click(function() {
         window.location.replace("/logoutUser/");
     });
+
+    $("#monitor").click(function() {
+        window.location.replace("/monitorizar/");
+    });
+
+    //$("#ttyd").click(function() {
+    //    window.location.replace("/listarServerUser/");
+    //});
 });

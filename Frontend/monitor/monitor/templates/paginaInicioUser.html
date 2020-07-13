@@ -2,8 +2,39 @@
 <!--<header class="jumbotron container col-sm-12" style="background-color: black;"></header>-->
 {% block script %}<script src="/static/js/mainUser.js"></script>{% endblock %}
 {% include 'barraNavUser.html' %}
-<h3 class="text-center col-sm-12"><b>Pagina de inicio User</b></h3>
 <div class="text-center col-sm-12">{% if errores %}
     <div class="alert alert-danger container col-sm-12"><strong>ERROR! </strong>{{ errores }}</div> {% endif %}
+</div>
+<div class="container-fluid">
+    <div class="text-center">
+        <h2>Servidores Asociados</h2>
+        <h3>Bienvenido {{ usuario }}</h3>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="row lista">
+        {% for servidor in servidores %}
+        <div class="col-sm-3">
+            <div class="panel panel-default text-center">
+                <div class="panel-heading">
+                    <h4><b>{{ servidor.ip }}</b></h4>
+                    <div class="panel-body">
+                        <form method="POST" action="/monitorizar/">
+                            {% csrf_token %}
+                            <input id="ip" type="hidden" name="ip" value="{{ servidor.ip }}" readonly>
+                            
+                            <div class="col-sm-6">
+                                <a href="http://{{ servidor.ip }}:6767" target="_blank"><button class="b2" id="ttyd" style="vertical-align:middle"><span>ttyd</span></button></a>
+                            </div>
+                    
+                            <div class="col-sm-6">
+                                <button type="submit" class="b2" id="monitor" style="vertical-align:middle"><span>monitorizar</span></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

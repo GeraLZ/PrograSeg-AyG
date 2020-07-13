@@ -1,0 +1,7 @@
+13-Jul-20 01:09:57 - django.request - WARNING - Not Found: /favicon.ico
+13-Jul-20 01:10:03 - django.request - WARNING - Not Found: /favicon.ico
+13-Jul-20 01:12:45 - django.request - WARNING - Not Found: /favicon.ico
+13-Jul-20 01:12:52 - asyncio - DEBUG - Using selector: EpollSelector
+13-Jul-20 01:12:52 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+13-Jul-20 01:12:54 - urllib3.connectionpool - DEBUG - https://api.telegram.org:443 "GET /bot1142873581:AAHpI29ikOpv_AhuPgdXvCd1CJUF7pK2OLc/sendMessage?chat_id=651252741&parse_mode=Markdown&text=rNXjjeH/zhKPRXpxqEohWA== HTTP/1.1" 200 262
+13-Jul-20 01:13:05 - root - INFO - Se ha logueado el usuario adalucs

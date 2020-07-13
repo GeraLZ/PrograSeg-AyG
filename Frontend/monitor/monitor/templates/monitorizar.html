@@ -1,0 +1,14 @@
+{% extends 'monitorBase.html' %} {% block titulo %}MONITORIZAR SERVIDORES{% endblock %} {% block contenido %}
+<!--<header class="jumbotron container col-sm-12" style="background-color: black;"></header>-->
+{% block script %}<script src="/static/js/mainUser.js"></script>{% endblock %}
+{% include 'barraNavUser.html' %}
+<div class="container-fluid">
+    <div class="text-center">
+        <h2>Datos del Servidor</h2>
+        <h2>{{ ip }}</h2>
+        <h2>{{ memoria }}% de uso memoria</h2>
+        <h2>{{ cpu }}% de uso de cpu</h2>
+        <h2>{{ disco }}% de uso de disco</h2>
+    </div>
+</div>
+{% endblock %}

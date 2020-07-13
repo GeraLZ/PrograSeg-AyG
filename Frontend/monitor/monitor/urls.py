@@ -30,4 +30,5 @@ urlpatterns = [
     path('listarUser/',listarUser),
     path('listarServer/',listarServer),
     path('asociar/',asociar),
+    path('monitorizar/',monitorizar),
 ]
