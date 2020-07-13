@@ -7,8 +7,8 @@ RUN apt-get -y update \
 
 EXPOSE 7681
 
-ENV USER=""
-ENV PASS=""
+ENV USER_TTYD=""
+ENV PASS_TTYD=""
 
 COPY ./run.sh /
 RUN chmod 700 /run.sh

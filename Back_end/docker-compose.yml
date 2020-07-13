@@ -46,19 +46,17 @@ services:
     ports:
       - 8000:80
 
-  #pid: "host"
+  terminal:
+    environment:
+      USER_TTYD: ${USER_TTYD}
+      PASS_TTYD: ${PASS_TTYD}
+    build: ./terminal
+    restart: always
+    ports:
+      - 6767:7681
+    networks:
+      - net_terminal
 
-  #terminal:
-  #  image: terminal
-  #  environment:
-  #    USER: ${USER}
-  #    PASS: ${PASS}
-  #  restart: always
-  #  ports:
-  #    - 6767:7681
-  #  networks:
-  #    - net_terminal
-
-#networks:
-#  net_terminal:
-#    external: true
+networks:
+  net_terminal:
+    external: true
