@@ -89,6 +89,7 @@ def listarServer(request):
     if request.method == 'GET':
         return render(request, t, c)
 
+@decorador.verificar_Admin
 def asociar(request):
     t = 'asociar.html'
     if request.method == 'GET':
